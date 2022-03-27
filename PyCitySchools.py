@@ -237,5 +237,98 @@ new_column_order = ["School Type", "Total Students", "Total School Budget", "Per
 # Assign district summary df the new column order.
 per_school_summary_df = per_school_summary_df[new_column_order]
 
+sl_top_schools = per_school_summary_df.sort_values(["% Overall Passing"], ascending=False)
 # Display the data frame
-print(per_school_summary_df)
+print(sl_top_schools)
+#print(per_school_summary_df)
+#sort top 5 schools
+top_schools = per_school_summary_df.sort_values(["% Overall Passing"], ascending=False)
+
+#print(top_schools.head())
+
+# Sort and show top five schools.
+bottom_schools = per_school_summary_df.sort_values(["% Overall Passing"], ascending=True)
+
+#print(bottom_schools.head())
+
+# Create a grade level DataFrames.
+ninth_graders = school_data_complete_df[(school_data_complete_df["grade"] == "9th")]
+
+tenth_graders = school_data_complete_df[(school_data_complete_df["grade"] == "10th")]
+
+eleventh_graders = school_data_complete_df[(school_data_complete_df["grade"] == "11th")]
+
+twelfth_graders = school_data_complete_df[(school_data_complete_df["grade"] == "12th")]
+
+# Group each grade level DataFrame by the school name for the average math score.
+ninth_grade_math_scores = ninth_graders.groupby(["school_name"]).mean()["math_score"]
+
+tenth_grade_math_scores = tenth_graders.groupby(["school_name"]).mean()["math_score"]
+
+eleventh_grade_math_scores = eleventh_graders.groupby(["school_name"]).mean()["math_score"]
+
+twelfth_grade_math_scores = twelfth_graders.groupby(["school_name"]).mean()["math_score"]
+#print(eleventh_grade_math_scores)
+
+# Group each grade level DataFrame by the school name for the average reading score.
+ninth_grade_reading_scores = ninth_graders.groupby(["school_name"]).mean()["reading_score"]
+
+tenth_grade_reading_scores = tenth_graders.groupby(["school_name"]).mean()["reading_score"]
+
+eleventh_grade_reading_scores = eleventh_graders.groupby(["school_name"]).mean()["reading_score"]
+
+twelfth_grade_reading_scores = twelfth_graders.groupby(["school_name"]).mean()["reading_score"]
+#print(twelfth_grade_reading_scores)
+
+# Combine each grade level Series for average math scores by school into a single DataFrame.
+math_scores_by_grade = pd.DataFrame({
+               "9th": ninth_grade_math_scores,
+               "10th": tenth_grade_math_scores,
+               "11th": eleventh_grade_math_scores,
+               "12th": twelfth_grade_math_scores})
+
+#print(math_scores_by_grade)
+
+# Combine each grade level Series for average reading scores by school into a single DataFrame.
+reading_scores_by_grade = pd.DataFrame({
+              "9th": ninth_grade_reading_scores,
+              "10th": tenth_grade_reading_scores,
+              "11th": eleventh_grade_reading_scores,
+              "12th": twelfth_grade_reading_scores})
+
+#print(reading_scores_by_grade)
+# Format each grade column.
+math_scores_by_grade["9th"] = math_scores_by_grade["9th"].map("{:.1f}".format)
+
+math_scores_by_grade["10th"] = math_scores_by_grade["10th"].map("{:.1f}".format)
+
+math_scores_by_grade["11th"] = math_scores_by_grade["11th"].map("{:.1f}".format)
+
+math_scores_by_grade["12th"] = math_scores_by_grade["12th"].map("{:.1f}".format)
+
+ # Make sure the columns are in the correct order.
+math_scores_by_grade = math_scores_by_grade[["9th", "10th", "11th", "12th"]]
+
+# Remove the index name.
+math_scores_by_grade.index.name = None
+# Display the DataFrame.
+#print(math_scores_by_grade)
+
+# Format each grade column.
+reading_scores_by_grade["9th"] = reading_scores_by_grade["9th"].map("{:,.1f}".format)
+
+reading_scores_by_grade["10th"] = reading_scores_by_grade["10th"].map("{:,.1f}".format)
+
+reading_scores_by_grade["11th"] = reading_scores_by_grade["11th"].map("{:,.1f}".format)
+
+reading_scores_by_grade["12th"] = reading_scores_by_grade["12th"].map("{:,.1f}".format)
+
+# Make sure the columns are in the correct order.
+reading_scores_by_grade = reading_scores_by_grade[
+                 ["9th", "10th", "11th", "12th"]]
+
+# Remove the index name.
+reading_scores_by_grade.index.name = None
+# Display the data frame.
+print(reading_scores_by_grade)
+
